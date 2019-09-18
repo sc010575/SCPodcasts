@@ -1,0 +1,6 @@
+framework module Pods_SCPodcasts {
+  umbrella header "Pods-SCPodcasts-umbrella.h"
+
+  export *
+  module * { export * }
+}
