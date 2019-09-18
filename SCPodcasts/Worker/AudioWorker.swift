@@ -7,23 +7,40 @@ enum AudioState {
     case seek
 }
 
-class AudioWorker {
+protocol AudioWorkerUseCase {
+    func setCurrentItem(with url: URL)
+    func play()
+    func pause()
+    func setVolume(value: Float)
+    func stop()
+    func handlePlayPause() -> AudioState
+    func timeChanged(percentage: Float)
+    func playingProgress() -> Float
+    func seekToCurrentTime(delta: Int64)
+}
+
+final class AudioWorker:AudioWorkerUseCase {
 
     var currentTime: Box<CMTime> = Box(CMTime.zero)
+
+    static let shared = AudioWorker()
 
     private (set) var player: AVPlayer = {
         let avPlayer = AVPlayer()
         avPlayer.automaticallyWaitsToMinimizeStalling = false
         return avPlayer
     }()
-    
+
     private var boundaryTimeObserver: (() -> ())?
+
+    private init() { }
+
 
     func onObserveBoundaryTime (handler: @escaping () -> ()) -> AudioWorker {
         boundaryTimeObserver = handler
         return self
     }
-    
+
     var shouldObserveBoundaryTimeObserver = false {
         didSet {
             if shouldObserveBoundaryTimeObserver {
@@ -46,15 +63,15 @@ class AudioWorker {
     }
 
     func play() {
-       // player.play()
+        // player.play()
         player.playImmediately(atRate: 1.0)
     }
 
     func pause() {
         player.pause()
     }
-    
-    func setVolume(value:Float) {
+
+    func setVolume(value: Float) {
         player.volume = value
     }
 
@@ -62,7 +79,7 @@ class AudioWorker {
         player.seek(to: CMTimeMake(value: 0, timescale: 1))
         player.pause()
     }
-    
+
     func handlePlayPause() -> AudioState {
         print("Trying to play and pause")
         if player.timeControlStatus == .paused {
@@ -73,36 +90,40 @@ class AudioWorker {
             return .paused
         }
     }
-    
+
     func playingProgress() -> Float {
         let currentTimeSeconds = CMTimeGetSeconds(player.currentTime())
         let durationSeconds = CMTimeGetSeconds(player.currentItem?.duration ?? CMTimeMake(value: 1, timescale: 1))
         let percentage = currentTimeSeconds / durationSeconds
         return Float(percentage)
     }
-    
-    func timeChanged(percentage:Float) {
+
+    func timeChanged(percentage: Float) {
         guard let duration = player.currentItem?.duration else { return }
         let durationInSeconds = CMTimeGetSeconds(duration)
         let seekTimeInSeconds = Float64(percentage) * durationInSeconds
         let seekTime = CMTimeMakeWithSeconds(seekTimeInSeconds, preferredTimescale: 1)
         player.seek(to: seekTime)
     }
-    
+
     func seekToCurrentTime(delta: Int64) {
         let deltaSeconds = CMTimeMake(value: delta, timescale: 1)
         let seekTime = CMTimeAdd(player.currentTime(), deltaSeconds)
         player.seek(to: seekTime)
     }
 
-    fileprivate func observePlayerCurrentTime() {
+}
+
+fileprivate extension AudioWorker {
+
+    func observePlayerCurrentTime() {
         let interval = CMTimeMake(value: 1, timescale: 2)
         player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
             self?.currentTime.value = time
         }
     }
-    
-    fileprivate func setupAudioSession() {
+
+    func setupAudioSession() {
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
             try AVAudioSession.sharedInstance().setActive(true)

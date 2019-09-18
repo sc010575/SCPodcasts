@@ -38,7 +38,7 @@ class PlayerDetailsView: UIView {
             playEpisode()
         }
     }
-    var worker = AudioWorker()
+    var worker = AudioWorker.shared
 
     // MARK :- Nib initialization
     override func awakeFromNib() {
@@ -105,9 +105,15 @@ class PlayerDetailsView: UIView {
     }
 
 
+    fileprivate func stopAudioWorkerIfNeedBe() {
+        worker.stop()
+        shrinkEpisodeImageView()
+    }
+    
     fileprivate func playEpisode() {
         print("Trying to play episode at url:", episode.streamUrl)
         guard let url = URL(string: episode.streamUrl) else { return }
+        stopAudioWorkerIfNeedBe()
         worker.setCurrentItem(with: url)
         worker.play()
     }
