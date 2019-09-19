@@ -9,22 +9,23 @@
 import Foundation
 import UIKit
 
-protocol MainTabBarViewModelCoordinatorDelegate: class
-{
-    func podcastsSearchViewCoordinatorDidSelect(_ coordinator:PodcastsSearchViewCoordinator)
-}
+//protocol MainTabBarViewModelCoordinatorDelegate: class
+//{
+//    func podcastsSearchViewCoordinatorDidSelect(_ coordinator:PodcastsSearchViewCoordinator)
+//}
 
 class MainTabBarViewModel {
     
- //   var coordinator:Coordinator?
-    weak var delegate:MainTabBarViewModelCoordinatorDelegate?
-    
-    init(_ delegate:MainTabBarViewModelCoordinatorDelegate) {
-        self.delegate = delegate
+    enum TabState {
+        case favorites
+        case search
+        case downloads
     }
+
+    var podcastsSearchViewCoordinator: PodcastsSearchViewCoordinator?
     
-    func testCapture(_ coordinator:PodcastsSearchViewCoordinator) {
-        print("Capture")
-        delegate?.podcastsSearchViewCoordinatorDidSelect(coordinator)
+    func creatPodcastCoordinator(_ navController:UINavigationController, rootViewController :PodcastsController) {
+        podcastsSearchViewCoordinator = PodcastsSearchViewCoordinator(navController,controller: rootViewController)
+        podcastsSearchViewCoordinator?.start()
     }
 }
