@@ -22,7 +22,7 @@ class MainTabBarViewModel {
         case downloads
     }
 
-    var podcastsSearchViewCoordinator: PodcastsSearchViewCoordinator?
+    private var podcastsSearchViewCoordinator: Coordinator?
     
     func creatPodcastCoordinator(_ navController:UINavigationController, rootViewController :PodcastsController) {
         podcastsSearchViewCoordinator = PodcastsSearchViewCoordinator(navController,controller: rootViewController)

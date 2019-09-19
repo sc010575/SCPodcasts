@@ -12,7 +12,6 @@ class EpisodesController: UITableViewController {
 
     fileprivate let cellId = "EpisodeCell"
     var viewModel: EpisodesViewModel!
-    private var playerView: PlayerDetailsView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,11 +25,10 @@ class EpisodesController: UITableViewController {
         }
         setupTableView()
         viewModel.fetchEpisodes()
-        playerView = PlayerDetailsView.initFromNib()
     }
     
     fileprivate func setupTableView() {
-        let nib = UINib(nibName: "EpisodeCell", bundle: nil)
+        let nib = UINib(nibName: String(describing: EpisodeCell.self), bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: cellId)
         tableView.tableFooterView = UIView()
     }
@@ -66,10 +64,8 @@ class EpisodesController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let episode = viewModel.episodes.value[indexPath.row]
-        guard let playerView = playerView else { return }
-        playerView.episode = episode
-        playerView.frame = self.view.frame
-        let window = UIApplication.shared.keyWindow
-        window?.addSubview(playerView)
+        
+        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        mainTabBarController?.maximizePlayerDetails(episode: episode)
     }
 }

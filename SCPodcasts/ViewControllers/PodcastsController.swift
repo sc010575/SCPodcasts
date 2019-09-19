@@ -28,7 +28,7 @@ class PodcastsController: UITableViewController {
 
     fileprivate func setupTableView() {
         tableView.tableFooterView = UIView()
-        let nib = UINib(nibName: "PodcastCell", bundle: nil)
+        let nib = UINib(nibName: String(describing: PodcastCell.self), bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: cellId)
     }
     // MARK: - Table view data source

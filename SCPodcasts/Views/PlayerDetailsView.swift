@@ -25,7 +25,8 @@ class PlayerDetailsView: UIView {
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var durationLabel: UILabel!
     @IBAction func handleDismiss(_ sender: Any) {
-        self.removeFromSuperview()
+        let mainTabBarController =  UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        mainTabBarController?.minimizePlayerDetails()
     }
 
     // MARK:- Properties
@@ -61,6 +62,8 @@ class PlayerDetailsView: UIView {
             self?.enlargeEpisodeImageView()
         }.shouldObserveBoundaryTimeObserver = true
     
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
+
         setupRemoteControl()
     }
 
@@ -73,6 +76,13 @@ class PlayerDetailsView: UIView {
             playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
             shrinkEpisodeImageView()
         }
+    }
+    
+    @objc func handleTapMaximize() {
+        
+        let mainTabBarController =  UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        mainTabBarController?.maximizePlayerDetails(episode: nil)
+
     }
 
     // MARK:- Private functions
