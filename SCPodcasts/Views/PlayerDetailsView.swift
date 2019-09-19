@@ -40,6 +40,10 @@ class PlayerDetailsView: UIView {
     }
     var worker = AudioWorker.shared
 
+    static func initFromNib() -> PlayerDetailsView {
+        return Bundle.main.loadNibNamed(String(describing: PlayerDetailsView.self), owner: self, options: nil)?.first as! PlayerDetailsView
+    }
+    
     // MARK :- Nib initialization
     override func awakeFromNib() {
         super.awakeFromNib()

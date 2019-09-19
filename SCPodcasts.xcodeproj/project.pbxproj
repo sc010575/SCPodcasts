@@ -32,6 +32,8 @@
 		C52322572211E60500447893 /* RSSFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52322562211E60500447893 /* RSSFeed.swift */; };
 		C52322592212E90700447893 /* PlayerDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C52322582212E90700447893 /* PlayerDetailsView.xib */; };
 		C523225B2212EF0300447893 /* PlayerDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523225A2212EF0300447893 /* PlayerDetailsView.swift */; };
+		C598F8492331F488002BE808 /* MiniPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C598F8482331F488002BE808 /* MiniPlayerView.swift */; };
+		C598F84B233250D6002BE808 /* MainTabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C598F84A233250D6002BE808 /* MainTabBarViewModel.swift */; };
 		C5B1430122185BA90007D187 /* CMTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B1430022185BA90007D187 /* CMTime.swift */; };
 		C5B143042219CCA30007D187 /* AudioWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B143032219CCA30007D187 /* AudioWorker.swift */; };
 		E5CF750D40442897AC1C8147 /* Pods_SCPodcastsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF09303ABF53FA928314EBB4 /* Pods_SCPodcastsTests.framework */; };
@@ -80,6 +82,8 @@
 		C52322562211E60500447893 /* RSSFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSSFeed.swift; sourceTree = "<group>"; };
 		C52322582212E90700447893 /* PlayerDetailsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerDetailsView.xib; sourceTree = "<group>"; };
 		C523225A2212EF0300447893 /* PlayerDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDetailsView.swift; sourceTree = "<group>"; };
+		C598F8482331F488002BE808 /* MiniPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniPlayerView.swift; sourceTree = "<group>"; };
+		C598F84A233250D6002BE808 /* MainTabBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewModel.swift; sourceTree = "<group>"; };
 		C5B1430022185BA90007D187 /* CMTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMTime.swift; sourceTree = "<group>"; };
 		C5B143032219CCA30007D187 /* AudioWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioWorker.swift; sourceTree = "<group>"; };
 		E0881A29A1407A18A6E825CF /* Pods-SCPodcastsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SCPodcastsTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SCPodcastsTests/Pods-SCPodcastsTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -201,6 +205,7 @@
 			children = (
 				C523220D220E1B3C00447893 /* PodcastsSearchViewModel.swift */,
 				C523221E2211BE9500447893 /* EpisodesViewModel.swift */,
+				C598F84A233250D6002BE808 /* MainTabBarViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -214,6 +219,7 @@
 				C52322132210943A00447893 /* PodcastCell.xib */,
 				C52322582212E90700447893 /* PlayerDetailsView.xib */,
 				C523225A2212EF0300447893 /* PlayerDetailsView.swift */,
+				C598F8482331F488002BE808 /* MiniPlayerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -433,9 +439,11 @@
 				C52322572211E60500447893 /* RSSFeed.swift in Sources */,
 				C52321E2220C8CB100447893 /* AppDelegate.swift in Sources */,
 				C52322542211E5A400447893 /* EpisodeCell.swift in Sources */,
+				C598F8492331F488002BE808 /* MiniPlayerView.swift in Sources */,
 				C523220E220E1B3C00447893 /* PodcastsSearchViewModel.swift in Sources */,
 				C5232207220C8F0500447893 /* MainTabBarController.swift in Sources */,
 				C5232203220C8D6900447893 /* Coordinator.swift in Sources */,
+				C598F84B233250D6002BE808 /* MainTabBarViewModel.swift in Sources */,
 				C5232217221198BE00447893 /* Podcast.swift in Sources */,
 				C52322512211E4E500447893 /* Episode.swift in Sources */,
 				C523220C220E1AE700447893 /* PodcastsController.swift in Sources */,

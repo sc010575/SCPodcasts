@@ -23,7 +23,7 @@ class CustomNavigationController: UINavigationController {
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    private var applicationCoordinator: ApplicationCoordinator?
+    private var applicationCoordinator: Coordinator?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

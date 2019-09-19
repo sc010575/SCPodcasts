@@ -26,7 +26,7 @@ class EpisodesController: UITableViewController {
         }
         setupTableView()
         viewModel.fetchEpisodes()
-        playerView = Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as? PlayerDetailsView
+        playerView = PlayerDetailsView.initFromNib()
     }
     
     fileprivate func setupTableView() {

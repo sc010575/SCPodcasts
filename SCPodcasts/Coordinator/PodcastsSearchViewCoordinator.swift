@@ -8,10 +8,7 @@ protocol PodcastsSearchViewModelCoordinatorDelegate: class
 
 class PodcastsSearchViewCoordinator: Coordinator {
     private let presenter: UINavigationController
-    //    private let episodesController: EpisodesController
-    //    weak var delegate: PodcastsSearchViewModelCoordinatorDelegate?
     private let podcastsSearchController:PodcastsController
-    // private var episodesController = EpisodesController()
     
     init(_ navigationController: UINavigationController,controller:PodcastsController ) {
         self.presenter = navigationController
