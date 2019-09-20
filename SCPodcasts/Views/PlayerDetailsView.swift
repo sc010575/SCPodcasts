@@ -29,12 +29,21 @@ class PlayerDetailsView: UIView {
         mainTabBarController?.minimizePlayerDetails()
     }
 
+    lazy var miniPlayerView:MiniPlayerView = {
+        let rect = CGRect.zero
+        let view = MiniPlayerView(frame: rect)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     // MARK:- Properties
     var episode: Episode! {
         didSet {
             guard let url = URL(string: episode.imageUrl ?? "") else { return }
             episodeImageView.sd_setImage(with: url, completed: nil)
+            miniPlayerView.miniEpisodeImageView.sd_setImage(with: url, completed: nil)
             titleLable.text = episode.title
+            miniPlayerView.miniTitleLabel.text = episode.title
             authorLabel.text = episode.author
             playEpisode()
         }
@@ -65,6 +74,7 @@ class PlayerDetailsView: UIView {
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
 
         setupRemoteControl()
+        setupMiniPlayerView()
     }
 
     @objc func handlePlayPause() {
@@ -86,6 +96,17 @@ class PlayerDetailsView: UIView {
     }
 
     // MARK:- Private functions
+    
+    fileprivate func setupMiniPlayerView() {
+    
+        addSubview(miniPlayerView)
+        miniPlayerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        miniPlayerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        miniPlayerView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        miniPlayerView.widthAnchor.constraint(equalToConstant: frame.width).isActive = true
+        miniPlayerView.heightAnchor.constraint(equalToConstant: 64).isActive = true
+    }
+    
     fileprivate func setupRemoteControl() {
         
         UIApplication.shared.beginReceivingRemoteControlEvents()
@@ -112,8 +133,6 @@ class PlayerDetailsView: UIView {
         }
     }
     
-
-
     fileprivate func updateCurrentTimeSlider() {
         self.currentTimeSlider.value = worker.playingProgress()
     }
