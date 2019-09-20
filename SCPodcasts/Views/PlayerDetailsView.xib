@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -68,13 +68,13 @@
                             </constraints>
                         </stackView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Episode Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DGb-Sp-BxX">
-                            <rect key="frame" x="0.0" y="478" width="366" height="0.0"/>
+                            <rect key="frame" x="0.0" y="478" width="366" height="8"/>
                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CBd-To-Q8g" userLabel="Author">
-                            <rect key="frame" x="0.0" y="478" width="366" height="8"/>
+                            <rect key="frame" x="0.0" y="486" width="366" height="0.0"/>
                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                             <color key="textColor" red="0.69149696826934814" green="0.30306011438369751" blue="0.8340989351272583" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -170,6 +170,7 @@
                 <outlet property="currentTimeSlider" destination="9P5-y4-hyL" id="CiA-B7-sih"/>
                 <outlet property="durationLabel" destination="J45-sF-JcH" id="Ec8-E7-2ek"/>
                 <outlet property="episodeImageView" destination="4QB-jH-Mz3" id="xHc-TW-8EP"/>
+                <outlet property="miximizedStackView" destination="YLf-by-CLh" id="kY2-ms-PC1"/>
                 <outlet property="playPauseButton" destination="mZh-6X-Wf9" id="6uo-IH-UTK"/>
                 <outlet property="titleLable" destination="DGb-Sp-BxX" id="QfJ-kK-Hli"/>
             </connections>

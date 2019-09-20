@@ -6,6 +6,7 @@ import MediaPlayer
 class PlayerDetailsView: UIView {
 
     // MARK:- IBOutlet properties
+    @IBOutlet weak var miximizedStackView: UIStackView!
     @IBOutlet weak var episodeImageView: UIImageView! {
         didSet {
             episodeImageView.layer.cornerRadius = 5
@@ -30,7 +31,7 @@ class PlayerDetailsView: UIView {
     }
 
     lazy var miniPlayerView: MiniPlayerView = {
-        let rect = CGRect.zero
+        let rect =  CGRect.zero
         let view = MiniPlayerView(frame: rect)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -92,7 +93,6 @@ class PlayerDetailsView: UIView {
     // MARK:- Private functions
 
     fileprivate func setupMiniPlayerView() {
-
         addSubview(miniPlayerView)
         miniPlayerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         miniPlayerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
