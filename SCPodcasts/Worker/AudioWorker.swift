@@ -9,17 +9,21 @@ enum AudioState {
 
 protocol AudioWorkerUseCase {
     func setCurrentItem(with url: URL)
-    func play()
-    func pause()
+    func play(shouldNotify notifyNeeded: Bool)
+    func pause(shouldNotify notifyNeeded: Bool)
     func setVolume(value: Float)
     func stop()
-    func handlePlayPause() -> AudioState
+    func playPause()
     func timeChanged(percentage: Float)
     func playingProgress() -> Float
     func seekToCurrentTime(delta: Int64)
 }
 
-final class AudioWorker:AudioWorkerUseCase {
+protocol AudioWorkerListener: class {
+    func audioWorkerStatusDidChanged(_ changeState: AudioState)
+}
+
+class AudioWorker: AudioWorkerUseCase {
 
     var currentTime: Box<CMTime> = Box(CMTime.zero)
 
@@ -35,6 +39,7 @@ final class AudioWorker:AudioWorkerUseCase {
 
     private init() { }
 
+    var listeners = [AudioWorkerListener]()
 
     func onObserveBoundaryTime (handler: @escaping () -> ()) -> AudioWorker {
         boundaryTimeObserver = handler
@@ -60,15 +65,21 @@ final class AudioWorker:AudioWorkerUseCase {
         player.replaceCurrentItem(with: playerItem)
         observePlayerCurrentTime()
         setupAudioSession()
+        notifyListner(state: .play)
     }
 
-    func play() {
-        // player.play()
+    func play(shouldNotify notifyNeeded: Bool = true) {
         player.playImmediately(atRate: 1.0)
+        if notifyNeeded {
+            notifyListner(state: .play)
+        }
     }
 
-    func pause() {
+    func pause(shouldNotify notifyNeeded: Bool = true) {
         player.pause()
+        if notifyNeeded {
+            notifyListner(state: .paused)
+        }
     }
 
     func setVolume(value: Float) {
@@ -80,16 +91,22 @@ final class AudioWorker:AudioWorkerUseCase {
         player.pause()
     }
 
-    func handlePlayPause() -> AudioState {
-        print("Trying to play and pause")
+    func playPause() {
         if player.timeControlStatus == .paused {
             play()
-            return .play
         } else {
             pause()
-            return .paused
         }
     }
+
+    func addListener(listener: AudioWorkerListener) {
+        listeners.append(listener)
+    }
+
+    func removeListener(listener: AudioWorkerListener) {
+        listeners = listeners.filter { $0 !== listener }
+    }
+
 
     func playingProgress() -> Float {
         let currentTimeSeconds = CMTimeGetSeconds(player.currentTime())
@@ -129,6 +146,12 @@ fileprivate extension AudioWorker {
             try AVAudioSession.sharedInstance().setActive(true)
         } catch let sessionErr {
             print("Failed to activate session:", sessionErr)
+        }
+    }
+
+    func notifyListner(state: AudioState) {
+        self.listeners.forEach {
+            $0.audioWorkerStatusDidChanged(state)
         }
     }
 }

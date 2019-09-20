@@ -4,7 +4,7 @@ import AVKit
 import MediaPlayer
 
 class PlayerDetailsView: UIView {
-    
+
     // MARK:- IBOutlet properties
     @IBOutlet weak var episodeImageView: UIImageView! {
         didSet {
@@ -25,17 +25,17 @@ class PlayerDetailsView: UIView {
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var durationLabel: UILabel!
     @IBAction func handleDismiss(_ sender: Any) {
-        let mainTabBarController =  UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
         mainTabBarController?.minimizePlayerDetails()
     }
 
-    lazy var miniPlayerView:MiniPlayerView = {
+    lazy var miniPlayerView: MiniPlayerView = {
         let rect = CGRect.zero
         let view = MiniPlayerView(frame: rect)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     // MARK:- Properties
     var episode: Episode! {
         didSet {
@@ -53,7 +53,7 @@ class PlayerDetailsView: UIView {
     static func initFromNib() -> PlayerDetailsView {
         return Bundle.main.loadNibNamed(String(describing: PlayerDetailsView.self), owner: self, options: nil)?.first as! PlayerDetailsView
     }
-    
+
     // MARK :- Nib initialization
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -70,35 +70,29 @@ class PlayerDetailsView: UIView {
             print("Episode started playing")
             self?.enlargeEpisodeImageView()
         }.shouldObserveBoundaryTimeObserver = true
-    
+
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
 
         setupRemoteControl()
         setupMiniPlayerView()
+        worker.addListener(listener: self)
     }
 
     @objc func handlePlayPause() {
-        print("Trying to play and pause")
-        if worker.handlePlayPause() == .play {
-            playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
-            enlargeEpisodeImageView()
-        } else {
-            playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
-            shrinkEpisodeImageView()
-        }
+        worker.playPause()
     }
-    
+
     @objc func handleTapMaximize() {
-        
-        let mainTabBarController =  UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+
+        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
         mainTabBarController?.maximizePlayerDetails(episode: nil)
 
     }
 
     // MARK:- Private functions
-    
+
     fileprivate func setupMiniPlayerView() {
-    
+
         addSubview(miniPlayerView)
         miniPlayerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         miniPlayerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
@@ -106,9 +100,9 @@ class PlayerDetailsView: UIView {
         miniPlayerView.widthAnchor.constraint(equalToConstant: frame.width).isActive = true
         miniPlayerView.heightAnchor.constraint(equalToConstant: 64).isActive = true
     }
-    
+
     fileprivate func setupRemoteControl() {
-        
+
         UIApplication.shared.beginReceivingRemoteControlEvents()
         let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.playCommand.isEnabled = true
@@ -117,7 +111,7 @@ class PlayerDetailsView: UIView {
             self.playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
             return .success
         }
-        
+
         commandCenter.pauseCommand.isEnabled = true
         commandCenter.pauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
             self.worker.pause()
@@ -127,12 +121,12 @@ class PlayerDetailsView: UIView {
 
         commandCenter.togglePlayPauseCommand.isEnabled = true
         commandCenter.togglePlayPauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
-            
+
             self.handlePlayPause()
             return .success
         }
     }
-    
+
     fileprivate func updateCurrentTimeSlider() {
         self.currentTimeSlider.value = worker.playingProgress()
     }
@@ -142,13 +136,12 @@ class PlayerDetailsView: UIView {
         worker.stop()
         shrinkEpisodeImageView()
     }
-    
+
     fileprivate func playEpisode() {
         print("Trying to play episode at url:", episode.streamUrl)
         guard let url = URL(string: episode.streamUrl) else { return }
         stopAudioWorkerIfNeedBe()
         worker.setCurrentItem(with: url)
-        worker.play()
     }
 
     fileprivate func enlargeEpisodeImageView() {
@@ -180,5 +173,22 @@ class PlayerDetailsView: UIView {
 
     @IBAction func handleVolumeChanged(_ sender: UISlider) {
         worker.setVolume(value: sender.value)
+    }
+}
+
+extension PlayerDetailsView: AudioWorkerListener {
+    func audioWorkerStatusDidChanged(_ changeState: AudioState) {
+        switch changeState {
+        case .play:
+            playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            worker.play(shouldNotify:false)
+            enlargeEpisodeImageView()
+        case .paused:
+            playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            worker.pause(shouldNotify:false)
+            shrinkEpisodeImageView()
+        default:
+            break
+        }
     }
 }

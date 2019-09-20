@@ -64,9 +64,9 @@ class MiniPlayerView: UIView {
     }
 
     fileprivate func setup() {
+        AudioWorker.shared.addListener(listener: self)
         backgroundColor = .purple
         addSubview(barStackView)
-        
         NSLayoutConstraint.activate([barStackView.topAnchor.constraint(equalTo: topAnchor, constant: UIConstant.contentPadding), barStackView.leftAnchor.constraint(equalTo: leftAnchor, constant: UIConstant.contentPadding),
             barStackView.rightAnchor.constraint(equalTo: rightAnchor, constant: UIConstant.contentPadding),
             barStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -74,10 +74,26 @@ class MiniPlayerView: UIView {
             miniEpisodeImageView.heightAnchor.constraint(equalTo: miniEpisodeImageView.widthAnchor),
             miniPlayPauseButton.widthAnchor.constraint(equalToConstant: UIConstant.buttonDimention),
             miniPlayPauseButton.heightAnchor.constraint(equalTo: miniPlayPauseButton.widthAnchor)])
-            self.layoutIfNeeded()
+     }
+        
+    @objc func performPlayPause() {
+        let worker = AudioWorker.shared
+        worker.playPause()
+    }
+}
+
+extension MiniPlayerView : AudioWorkerListener {
+    func audioWorkerStatusDidChanged(_ changeState: AudioState) {
+        
+        switch changeState {
+        case .paused:
+            miniPlayPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+        case .play:
+            miniPlayPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+        default:
+            break
+        }
     }
     
-    @objc func performPlayPause() {
-        print("performPlayPause")
-    }
+    
 }
