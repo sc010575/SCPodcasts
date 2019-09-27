@@ -9,10 +9,6 @@
 import Foundation
 import UIKit
 
-//protocol MainTabBarViewModelCoordinatorDelegate: class
-//{
-//    func podcastsSearchViewCoordinatorDidSelect(_ coordinator:PodcastsSearchViewCoordinator)
-//}
 
 class MainTabBarViewModel {
     

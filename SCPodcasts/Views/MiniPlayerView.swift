@@ -60,7 +60,6 @@ class MiniPlayerView: UIView {
         stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = UIConstant.stackViewSpacing
-        stackView.backgroundColor = .purple
         return stackView
     }()
 

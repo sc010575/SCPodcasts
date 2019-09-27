@@ -49,7 +49,7 @@ class PlayerDetailsView: UIView {
             playEpisode()
         }
     }
-    var worker = AudioWorker.shared
+    private let worker = AudioWorker.shared
 
     static func initFromNib() -> PlayerDetailsView {
         return Bundle.main.loadNibNamed(String(describing: PlayerDetailsView.self), owner: self, options: nil)?.first as! PlayerDetailsView
