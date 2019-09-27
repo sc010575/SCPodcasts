@@ -24,16 +24,48 @@ class EpisodesController: UITableViewController {
             self.tableView.reloadData()
         }
         setupTableView()
+        setupNavigationBarButtons()
         viewModel.fetchEpisodes()
     }
-    
+
     fileprivate func setupTableView() {
         let nib = UINib(nibName: String(describing: EpisodeCell.self), bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: cellId)
         tableView.tableFooterView = UIView()
     }
 
-    
+    fileprivate func setupNavigationBarButtons() {
+        //let's check if we have already saved this podcast as fav
+        let savedPodcasts = UserDefaults.standard.savedPodcasts()
+        let hasFavorited = savedPodcasts.firstIndex(where: { $0.trackName == self.viewModel.podcast.value?.trackName && $0.artistName == self.viewModel.podcast.value?.artistName }) != nil
+        if hasFavorited {
+            // setting up our heart icon
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "heart"), style: .plain, target: nil, action: nil)
+        } else {
+            navigationItem.rightBarButtonItems = [
+                UIBarButtonItem(title: "Favorite", style: .plain, target: self, action: #selector(handleSaveFavorite))
+            ]
+        }
+
+    }
+
+    @objc fileprivate func handleSaveFavorite() {
+        print("Saving info into UserDefaults")
+        
+        guard let podcast = viewModel.podcast.value else { return }
+        
+        // 1. Transform Podcast into Data
+        var listOfPodcasts = UserDefaults.standard.savedPodcasts()
+        listOfPodcasts.append(podcast)
+        UserDefaults.standard.savePodcasts(listOfPodcasts)
+        showBadgeHighlight()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "heart"), style: .plain, target: nil, action: nil)
+    }
+
+    fileprivate func showBadgeHighlight() {
+        UIApplication.mainTabBarController()?.viewControllers?[0].tabBarItem.badgeValue = "New"
+    }
+
 
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -64,7 +96,7 @@ class EpisodesController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let episode = viewModel.episodes.value[indexPath.row]
-        
+
         let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
         mainTabBarController?.maximizePlayerDetails(episode: episode)
     }
