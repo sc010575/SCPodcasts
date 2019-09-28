@@ -9,16 +9,16 @@
 import Foundation
 
 extension UserDefaults {
-    
+
     static let favoritedPodcastKey = "favoritedPodcastKey"
-    
+
     func savedPodcasts() -> [Podcast] {
         guard let savedPodcastsData = UserDefaults.standard.data(forKey: UserDefaults.favoritedPodcastKey) else { return [] }
         guard let savedPodcasts = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedPodcastsData) as? [Podcast] else { return [] }
 
         return savedPodcasts
     }
-    
+
     func deletePodcast(podcast: Podcast) {
         let podcasts = savedPodcasts()
         let filteredPodcasts = podcasts.filter { (p) -> Bool in
@@ -27,11 +27,10 @@ extension UserDefaults {
         let data = try? NSKeyedArchiver.archivedData(withRootObject: filteredPodcasts, requiringSecureCoding: false)
         UserDefaults.standard.set(data, forKey: UserDefaults.favoritedPodcastKey)
     }
-    
-    func savePodcasts(_ podcasts:[Podcast]) {
-        
+
+    func savePodcasts(_ podcasts: [Podcast]) {
         let data = try? NSKeyedArchiver.archivedData(withRootObject: podcasts, requiringSecureCoding: false)
         UserDefaults.standard.set(data, forKey: UserDefaults.favoritedPodcastKey)
     }
-    
+
 }

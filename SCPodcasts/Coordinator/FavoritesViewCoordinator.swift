@@ -11,17 +11,25 @@ import UIKit
 
 class FavoritesViewCoordinator: Coordinator {
     private let presenter: UINavigationController
-    private let controller: FavoritesController
+    private let controller: FavouritesController
     
-    init(_ navigationController: UINavigationController,controller:FavoritesController ) {
+    init(_ navigationController: UINavigationController,controller:FavouritesController ) {
         self.presenter = navigationController
         self.controller = controller
     }
     
     func start() {
-        let viewModel = FavoritesViewModel()
-//        viewModel.coordinatorDelegate = self
+        let viewModel = FavouritesViewModel()
+        viewModel.coordinatorDelegate = self
         controller.viewModel = viewModel
     }
 
 }
+
+extension FavoritesViewCoordinator: PodcastsCoordinatorDelegate {
+    
+    func viewModelDidSelectRow(with data: Podcast) {
+        showEpisode(with: data, presenter:presenter )
+    }
+}
+

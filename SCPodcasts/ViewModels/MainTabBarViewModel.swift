@@ -22,11 +22,11 @@ class MainTabBarViewModel {
     private var favoritesViewCoordinator: Coordinator?
 
     func createPodcastCoordinator(_ navController:UINavigationController, rootViewController :PodcastsController) {
-        podcastsSearchViewCoordinator = PodcastsSearchViewCoordinator(navController,controller: rootViewController)
+        podcastsSearchViewCoordinator = PodcastsViewCoordinator(navController,controller: rootViewController)
         podcastsSearchViewCoordinator?.start()
     }
     
-    func createFavoritesViewCoordinator( _ navController:UINavigationController, rootViewController :FavoritesController) {
+    func createFavoritesViewCoordinator( _ navController:UINavigationController, rootViewController :FavouritesController) {
         favoritesViewCoordinator = FavoritesViewCoordinator(navController,controller: rootViewController)
         favoritesViewCoordinator?.start()
     }

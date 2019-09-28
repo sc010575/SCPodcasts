@@ -73,7 +73,7 @@ fileprivate extension MainTabBarController {
 
     func setupTabBarViewControllers() {
         let layout = UICollectionViewFlowLayout()
-        let favoritesController = FavoritesController(collectionViewLayout: layout)
+        let favoritesController = FavouritesController(collectionViewLayout: layout)
         viewControllers = [
             generateNavigationController(for: favoritesController, title: "My Favorites", image: #imageLiteral(resourceName: "favorites"), tabState: .favorites),
             generateNavigationController(for: PodcastsController(), title: "Amazing Radios", image: #imageLiteral(resourceName: "radio"), tabState: .search),
@@ -88,7 +88,7 @@ fileprivate extension MainTabBarController {
         navController.tabBarItem.image = image
         switch tabState {
         case .favorites:
-            guard let rootVC = rootViewController as? FavoritesController else { return ViewController() }
+            guard let rootVC = rootViewController as? FavouritesController else { return ViewController() }
             viewModel.createFavoritesViewCoordinator(navController, rootViewController: rootVC)
         case .search:
             guard let rootVC = rootViewController as? PodcastsController else { return ViewController() }

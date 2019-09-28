@@ -25,7 +25,7 @@ protocol AudioWorkerListener: class {
 
 class AudioWorker: AudioWorkerUseCase {
 
-    var currentTime: Box<CMTime> = Box(CMTime.zero)
+    var currentTime: Observer<CMTime> = Observer(CMTime.zero)
 
     static let shared = AudioWorker()
 
